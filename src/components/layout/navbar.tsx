@@ -8,9 +8,7 @@ export function Navbar() {
 
   const handleLogout = () => {
     logout();
-    const sso = "https://sso.digtri.com";
-    const edlive = typeof window !== "undefined" ? window.location.origin : "https://live.digtri.com";
-    window.location.href = `${sso}/logout?callbackUrl=${encodeURIComponent(edlive)}`;
+    window.location.href = "https://sso.digtri.com/logout?callbackUrl=https://live.digtri.com/logout";
   };
 
   return (
@@ -41,10 +39,10 @@ export function Navbar() {
                 />
               )}
               <span className="hidden sm:inline text-sm text-gray-600">
-                {user?.display_name || user?.email?.split("@")[0]}
+                {user?.display_name || user?.email?.split("@")[0] || "User"}
               </span>
               <span className="hidden sm:inline text-xs px-2 py-0.5 bg-gray-100 rounded-full text-gray-500 capitalize">
-                {user?.role}
+                {user?.role || "user"}
               </span>
               {isAllowed(["owner", "admin"]) && (
                 <a
@@ -63,7 +61,7 @@ export function Navbar() {
             </div>
           ) : (
             <a
-              href={`https://sso.digtri.com/login?callbackUrl=${encodeURIComponent(typeof window !== "undefined" ? window.location.origin + "/auth/callback" : "https://live.digtri.com/auth/callback")}`}
+              href="https://sso.digtri.com/login?callbackUrl=https://live.digtri.com/auth/callback"
               className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
