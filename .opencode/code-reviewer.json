@@ -1,0 +1,17 @@
+{
+  "output": {
+    "local": true,
+    "github_comment": false,
+    "github_review": false
+  },
+  "trace_depth": {
+    "logic": "deep",
+    "style": "shallow",
+    "refactor": "medium"
+  },
+  "ignore_patterns": [
+    "*.test.ts",
+    "*.spec.ts",
+    "__mocks__/**"
+  ]
+}

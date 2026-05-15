@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "edlive-orchestrator": {
+      "description": "Main orchestration agent for EdLive realtime public debate ecosystem. Single-entry orchestrator for live discussion coordination, semantic routing, AI-assisted analysis, UI generation via skills, and audience engagement systems.",
+      "mode": "subagent"
+    }
+  },
+  "skills": {
+    "paths": [
+      ".opencode/skills"
+    ]
+  }
+}
