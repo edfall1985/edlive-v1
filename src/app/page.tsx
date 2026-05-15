@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const status = useAuthStore((s) => s.status);
+  const logout = useAuthStore((s) => s.logout);
   const setDebate = useDebateStore((s) => s.setDebate);
   const setSpeakers = useDebateStore((s) => s.setSpeakers);
   const setVoteStats = useDebateStore((s) => s.setVoteStats);
@@ -25,6 +26,17 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Handle logout flag from SSO
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("logout") === "1") {
+      logout();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [mounted, logout]);
 
   // Mock data for MVP Phase 1
   useEffect(() => {

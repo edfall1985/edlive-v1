@@ -9,7 +9,7 @@ export function Navbar() {
   const handleLogout = () => {
     logout();
     const sso = "https://sso.digtri.com";
-    const edlive = window.location.origin;
+    const edlive = typeof window !== "undefined" ? window.location.origin : "https://live.digtri.com";
     window.location.href = `${sso}/logout?callbackUrl=${encodeURIComponent(edlive)}`;
   };
 
@@ -63,7 +63,7 @@ export function Navbar() {
             </div>
           ) : (
             <a
-              href={`https://sso.digtri.com/login?callbackUrl=${typeof window !== "undefined" ? encodeURIComponent(window.location.href) : ""}`}
+              href={`https://sso.digtri.com/login?callbackUrl=${encodeURIComponent(typeof window !== "undefined" ? window.location.origin + "/auth/callback" : "https://live.digtri.com/auth/callback")}`}
               className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
