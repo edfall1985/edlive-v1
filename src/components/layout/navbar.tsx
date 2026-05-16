@@ -2,13 +2,16 @@
 
 import { useAuthStore } from "@/stores/auth-store";
 
+const SSO_URL = process.env.NEXT_PUBLIC_SSO_URL || "https://sso.digtri.com";
+const EDLIVE_URL = typeof window !== "undefined" ? window.location.origin : "https://live.digtri.com";
+
 export function Navbar() {
   const { status, user, logout, isAllowed } = useAuthStore();
   const isAuthed = status === "authenticated";
 
   const handleLogout = () => {
     logout();
-    window.location.href = "https://sso.digtri.com/logout?callbackUrl=https://live.digtri.com/logout";
+    window.location.href = `${SSO_URL}/logout?callbackUrl=${encodeURIComponent(EDLIVE_URL + "/logout")}`;
   };
 
   return (
@@ -61,7 +64,7 @@ export function Navbar() {
             </div>
           ) : (
             <a
-              href="https://sso.digtri.com/login?callbackUrl=https://live.digtri.com/auth/callback"
+              href={`${SSO_URL}/login?callbackUrl=${encodeURIComponent(EDLIVE_URL + "/auth/callback")}`}
               className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
