@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth-store";
+import { decodeJwtPayload } from "@/lib/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 
@@ -12,45 +13,59 @@ function CallbackHandler() {
 
   useEffect(() => {
     const token = searchParams.get("token");
-    const logout = searchParams.get("logout");
+    const isLogout = searchParams.get("logout");
+    const error = searchParams.get("error");
 
-    if (logout === "1") {
+    if (error) {
+      console.error("[Auth-Callback] Error:", error);
       setGuest();
-      router.push("/");
+      router.replace("/");
+      return;
+    }
+
+    if (isLogout === "1") {
+      setGuest();
+      router.replace("/");
       return;
     }
 
     if (!token) {
+      console.error("[Auth-Callback] No token received");
       setGuest();
-      router.push("/");
+      router.replace("/");
       return;
     }
 
-    // Set token in cookie and auth store
-    document.cookie = `edlive_token=${token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
-
-    // Decode token client-side to get user info
-    try {
-      const parts = token.split(".");
-      const payload = JSON.parse(atob(parts[1]));
-      
-      setAuth(
-        {
-          id: payload.id,
-          email: payload.email,
-          display_name: payload.name,
-          role: payload.role,
-          avatar_url: payload.avatar,
-        },
-        token,
-      );
-
-      // Redirect to home
-      router.push("/");
-    } catch {
+    const payload = decodeJwtPayload(token);
+    if (!payload) {
+      console.error("[Auth-Callback] Invalid token");
       setGuest();
-      router.push("/");
+      router.replace("/");
+      return;
     }
+
+    const user = {
+      id: payload.id,
+      email: payload.email,
+      display_name: payload.name,
+      role: payload.role,
+      avatar_url: payload.avatar,
+    };
+
+    // Set Zustand state immediately
+    setAuth(user);
+
+    // Call server to set cookies, then redirect
+    fetch("/api/auth/sso-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+      credentials: "same-origin",
+    })
+      .catch(() => {})
+      .finally(() => {
+        router.replace("/");
+      });
   }, [searchParams, setAuth, setGuest, router]);
 
   return (

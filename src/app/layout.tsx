@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { Navbar } from "@/components/layout/navbar";
 
 export const metadata: Metadata = {
   title: "edLive - Debate Command Center",
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className="min-h-screen bg-background">
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

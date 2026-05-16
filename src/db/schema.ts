@@ -14,11 +14,14 @@ import {
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
   email: varchar("email", { length: 255 }).notNull().unique(),
+  password_hash: varchar("password_hash", { length: 255 }),
   display_name: varchar("display_name", { length: 150 }),
   avatar_url: varchar("avatar_url", { length: 500 }),
   role: mysqlEnum("role", ["owner", "admin", "moderator", "mc", "user"])
     .default("user"),
   is_active: boolean("is_active").default(true),
+  reset_token: varchar("reset_token", { length: 255 }),
+  reset_token_expires: datetime("reset_token_expires", { mode: "date" }),
   created_at: timestamp("created_at").defaultNow(),
 });
 

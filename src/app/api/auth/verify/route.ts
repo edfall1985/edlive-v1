@@ -1,4 +1,4 @@
-import { verifyToken } from "@/lib/auth";
+import { verifySessionToken } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ valid: false }, { status: 400 });
     }
 
-    const user = verifyToken(token);
+    const user = await verifySessionToken(token);
     if (!user) {
       return NextResponse.json({ valid: false }, { status: 401 });
     }

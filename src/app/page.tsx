@@ -1,6 +1,5 @@
 "use client";
 
-import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { LiveEmbed } from "@/components/debate/live-embed";
 import { SpeakerGrid } from "@/components/debate/speaker-grid";
@@ -12,12 +11,9 @@ import { ViewerParticipation } from "@/components/participation/viewer-participa
 import { CommentsSection } from "@/components/comments/comments-section";
 import { TypingChallenge } from "@/components/typing-challenge/typing-challenge";
 import { useDebateStore } from "@/stores/debate-store";
-import { useAuthStore } from "@/stores/auth-store";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const status = useAuthStore((s) => s.status);
-  const logout = useAuthStore((s) => s.logout);
   const setDebate = useDebateStore((s) => s.setDebate);
   const setSpeakers = useDebateStore((s) => s.setSpeakers);
   const setVoteStats = useDebateStore((s) => s.setVoteStats);
@@ -26,17 +22,6 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Handle logout flag from SSO
-  useEffect(() => {
-    if (!mounted) return;
-    
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("logout") === "1") {
-      logout();
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, [mounted, logout]);
 
   // Mock data for MVP Phase 1
   useEffect(() => {
@@ -96,8 +81,6 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
-
       <main className="pt-20 pb-6 px-3 md:px-4 lg:px-6 max-w-7xl mx-auto">
         {/* Session & Topic Header */}
         <div className="mb-4 md:mb-6 animate-fade-in">
