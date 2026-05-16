@@ -1,0 +1,30 @@
+npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+
+added 188 packages, and audited 189 packages in 32s
+
+50 packages are looking for funding
+  run `npm fund` for details
+
+7 vulnerabilities (6 moderate, 1 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+> edlive-v1@0.1.0 build
+> next build
+
+   Using cached swc package @next/swc-linux-x64-gnu...
+   Using cached swc package @next/swc-linux-x64-musl...
+   ▲ Next.js 15.5.18
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 10.5s
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/app/logout/page.tsx:18:11
+Type error: Cannot find name 'clearAllCookies'.

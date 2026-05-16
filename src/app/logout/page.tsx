@@ -3,6 +3,22 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 
+function clearAllCookies() {
+  if (typeof document === "undefined") return;
+  const secure = window.location.protocol === "https:";
+  const cookieAttrs = `path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax${secure ? "; Secure" : ""}`;
+
+  document.cookie = `edlive_session=; ${cookieAttrs}`;
+  document.cookie = `edlive_user=; ${cookieAttrs}`;
+
+  const allCookies = document.cookie.split(";");
+  for (const cookie of allCookies) {
+    const name = cookie.split("=")[0].trim();
+    document.cookie = `${name}=; ${cookieAttrs}`;
+    document.cookie = `${name}=; ${cookieAttrs}; domain=${window.location.hostname}`;
+  }
+}
+
 function LogoutHandler() {
   const router = useRouter();
   const searchParams = useSearchParams();
